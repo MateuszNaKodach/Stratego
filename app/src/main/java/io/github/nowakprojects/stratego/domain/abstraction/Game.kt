@@ -1,4 +1,4 @@
-package io.github.nowakprojects.stratego.domain.interfaces
+package io.github.nowakprojects.stratego.domain.abstraction
 
 interface Game {
 

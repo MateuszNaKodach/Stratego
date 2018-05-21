@@ -4,5 +4,5 @@ enum class Player {
     FIRST,
     SECOND;
 
-    fun nextPlayer() = Player.values()[(this.ordinal + 1) % 2]
+    fun opposite() = Player.values()[(this.ordinal + 1) % 2]
 }
