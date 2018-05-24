@@ -19,8 +19,8 @@ class Stratego(val boardSize: Int = 8, val gameFinishedCallback: () -> Unit = {}
     fun makeMove(boardPoint: BoardPoint):PlayerMove? {
         val (rowIndexY, columnIndexX) = boardPoint
         if (board[rowIndexY][columnIndexX] is FreeField) {
-            board[rowIndexY][columnIndexX] = PlayerField(currentPlayer, rowIndexY, columnIndexX)
             val gainedPoints = PointsCalculator(board, boardPoint).calculate()
+            board[rowIndexY][columnIndexX] = PlayerField(currentPlayer, rowIndexY, columnIndexX)
             playerPoints[currentPlayer] = (playerPoints[currentPlayer] ?: 0).plus(gainedPoints)
             val playerMove = PlayerMove(currentPlayer, boardPoint, gainedPoints)
             commitPlayerMove(playerMove)

@@ -14,6 +14,8 @@ fun Board.row(rowIndex: Int): Array<Field> = this[rowIndex]
 
 fun Board.column(columnIndex: Int): Array<Field> = this.map { it[columnIndex] }.toTypedArray()
 
+fun Board.getPoint(boardPoint: BoardPoint) = this[boardPoint.rowIndexY][boardPoint.columnIndexX]
+
 fun Board.markField(player: Player, boardPoint: BoardPoint) {
     this[boardPoint.rowIndexY][boardPoint.columnIndexX] = PlayerField(player, boardPoint.rowIndexY, boardPoint.columnIndexX)
 }
@@ -66,7 +68,7 @@ fun Board.leftDiagonalOf(boardPoint: BoardPoint): Array<Field> {
     }
 
     return toTop().plus(toBottom()).plus(boardField)
-            .sortedWith(compareBy({it.columnIndexX},{it.rowIndexY}))
+            .sortedWith(compareBy({ it.columnIndexX }, { it.rowIndexY }))
             .toTypedArray()
 }
 
@@ -104,7 +106,7 @@ fun Board.rightDiagonalOf(boardPoint: BoardPoint): Array<Field> {
     }
 
     return toTop().plus(toBottom()).plus(boardField)
-            .sortedWith(compareBy({it.columnIndexX},{it.rowIndexY}))
+            .sortedWith(compareBy({ it.columnIndexX }, { it.rowIndexY }))
             .toTypedArray()
 }
 
@@ -112,11 +114,12 @@ fun countFreeFieldsIn(line: Array<Field>) = line.count { it is FreeField }
 
 fun Array<Field>.countFreeFields() = countFreeFieldsIn(this)
 
-fun Board.countFreeFieldsInRow(rowIndex: Int) = this.row(rowIndex).count { it is FreeField }
+fun Board.countFreeFieldsInRow(rowIndex: Int) = countFreeFieldsIn(this.row(rowIndex))
 
-fun Board.countFreeFieldsInColumn(columnIndex: Int) = this.column(columnIndex).count { it is FreeField }
+fun Board.countFreeFieldsInColumn(columnIndex: Int) = countFreeFieldsIn(this.column(columnIndex))
 
-fun isOnlyOneFreeIn(line: Array<Field>) = countFreeFieldsIn(line) == 1
+//TODO: Change method to better name - there was a bug - if line had only one elements, it
+fun isOnlyOneFreeIn(line: Array<Field>) = line.size>1 && countFreeFieldsIn(line) == 1
 
 fun Board.isOnlyOneFreeInRow(rowIndex: Int) = countFreeFieldsInRow(rowIndex) == 1
 
