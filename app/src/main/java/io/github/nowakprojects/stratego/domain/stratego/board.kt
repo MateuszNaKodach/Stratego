@@ -1,19 +1,21 @@
 package io.github.nowakprojects.stratego.domain.stratego
 
 typealias Board = Array<Array<Field>>
-typealias RowIndex = Int
-typealias ColumnIndex = Int
+typealias RowIndexY = Int
+typealias ColumnIndexX = Int
 
 object BoardBuilder {
     fun empty(n: Int) = Board(n, { rowIndex -> Array(n, { columnIndex -> FreeField(rowIndex, columnIndex) }) })
 }
+
+fun Board.deepClone() = this.copyOf().map { it.clone() }.toTypedArray()
 
 fun Board.row(rowIndex: Int): Array<Field> = this[rowIndex]
 
 fun Board.column(columnIndex: Int): Array<Field> = this.map { it[columnIndex] }.toTypedArray()
 
 fun Board.markField(player: Player, boardPoint: BoardPoint) {
-    this[boardPoint.rowIndex][boardPoint.columnIndex] = PlayerField(player, boardPoint.rowIndex, boardPoint.columnIndex)
+    this[boardPoint.rowIndexY][boardPoint.columnIndexX] = PlayerField(player, boardPoint.rowIndexY, boardPoint.columnIndexX)
 }
 
 fun Board.toPlayersBoardString() =
@@ -31,8 +33,8 @@ fun Array<Field>.printFieldLineString() = println(this.toFieldLineString())
 fun Array<Field>.printPlayerLineString() = println(this.toPlayerLineString())
 
 // Diagonal \ from bottom-right to top-left
-fun Board.leftDiagonalOf(rowIndex: RowIndex, columnIndex: ColumnIndex) =
-        this.leftDiagonalOf(BoardPoint(rowIndex, columnIndex))
+fun Board.leftDiagonalOf(rowIndexY: RowIndexY, columnIndexX: ColumnIndexX) =
+        this.leftDiagonalOf(BoardPoint(rowIndexY, columnIndexX))
 
 fun Board.leftDiagonalOf(boardPoint: BoardPoint): Array<Field> {
     val (rowIndex, columnIndex) = boardPoint
@@ -41,36 +43,36 @@ fun Board.leftDiagonalOf(boardPoint: BoardPoint): Array<Field> {
 
     fun toBottom(): Array<Field> {
         val result = mutableListOf<Field>()
-        var currentRowIndex: RowIndex = rowIndex + 1
-        var currentColumnIndex: ColumnIndex = columnIndex + 1
-        while (currentRowIndex < boardSize && currentColumnIndex < boardSize) {
-            result.add(this[currentRowIndex][currentColumnIndex])
-            currentRowIndex++
-            currentColumnIndex++
+        var currentRowIndexY: RowIndexY = rowIndex + 1
+        var currentColumnIndexX: ColumnIndexX = columnIndex + 1
+        while (currentRowIndexY < boardSize && currentColumnIndexX < boardSize) {
+            result.add(this[currentRowIndexY][currentColumnIndexX])
+            currentRowIndexY++
+            currentColumnIndexX++
         }
         return result.toTypedArray()
     }
 
     fun toTop(): Array<Field> {
         val result = mutableListOf<Field>()
-        var currentRowIndex: RowIndex = rowIndex - 1
-        var currentColumnIndex: ColumnIndex = columnIndex - 1
-        while (currentRowIndex > -1 && currentColumnIndex > -1) {
-            result.add(this[currentRowIndex][currentColumnIndex])
-            currentRowIndex--
-            currentColumnIndex--
+        var currentRowIndexY: RowIndexY = rowIndex - 1
+        var currentColumnIndexX: ColumnIndexX = columnIndex - 1
+        while (currentRowIndexY > -1 && currentColumnIndexX > -1) {
+            result.add(this[currentRowIndexY][currentColumnIndexX])
+            currentRowIndexY--
+            currentColumnIndexX--
         }
         return result.toTypedArray()
     }
 
     return toTop().plus(toBottom()).plus(boardField)
-            .sortedWith(compareBy({it.columnIndex},{it.rowIndex}))
+            .sortedWith(compareBy({it.columnIndexX},{it.rowIndexY}))
             .toTypedArray()
 }
 
 // Diagonal / from bottom-left to top-right
-fun Board.rightDiagonalOf(rowIndex: RowIndex, columnIndex: ColumnIndex) =
-        this.rightDiagonalOf(BoardPoint(rowIndex, columnIndex))
+fun Board.rightDiagonalOf(rowIndexY: RowIndexY, columnIndexX: ColumnIndexX) =
+        this.rightDiagonalOf(BoardPoint(rowIndexY, columnIndexX))
 
 fun Board.rightDiagonalOf(boardPoint: BoardPoint): Array<Field> {
     val (rowIndex, columnIndex) = boardPoint
@@ -79,30 +81,30 @@ fun Board.rightDiagonalOf(boardPoint: BoardPoint): Array<Field> {
 
     fun toTop(): Array<Field> {
         val result = mutableListOf<Field>()
-        var currentRowIndex: RowIndex = rowIndex - 1
-        var currentColumnIndex: ColumnIndex = columnIndex + 1
-        while (currentRowIndex > -1 && currentColumnIndex < boardSize) {
-            result.add(this[currentRowIndex][currentColumnIndex])
-            currentRowIndex--
-            currentColumnIndex++
+        var currentRowIndexY: RowIndexY = rowIndex - 1
+        var currentColumnIndexX: ColumnIndexX = columnIndex + 1
+        while (currentRowIndexY > -1 && currentColumnIndexX < boardSize) {
+            result.add(this[currentRowIndexY][currentColumnIndexX])
+            currentRowIndexY--
+            currentColumnIndexX++
         }
         return result.toTypedArray()
     }
 
     fun toBottom(): Array<Field> {
         val result = mutableListOf<Field>()
-        var currentRowIndex: RowIndex = rowIndex + 1
-        var currentColumnIndex: ColumnIndex = columnIndex - 1
-        while (currentRowIndex < boardSize && currentColumnIndex > -1) {
-            result.add(this[currentRowIndex][currentColumnIndex])
-            currentRowIndex++
-            currentColumnIndex--
+        var currentRowIndexY: RowIndexY = rowIndex + 1
+        var currentColumnIndexX: ColumnIndexX = columnIndex - 1
+        while (currentRowIndexY < boardSize && currentColumnIndexX > -1) {
+            result.add(this[currentRowIndexY][currentColumnIndexX])
+            currentRowIndexY++
+            currentColumnIndexX--
         }
         return result.toTypedArray()
     }
 
     return toTop().plus(toBottom()).plus(boardField)
-            .sortedWith(compareBy({it.columnIndex},{it.rowIndex}))
+            .sortedWith(compareBy({it.columnIndexX},{it.rowIndexY}))
             .toTypedArray()
 }
 

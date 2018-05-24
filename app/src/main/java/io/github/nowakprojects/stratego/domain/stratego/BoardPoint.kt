@@ -1,3 +1,3 @@
 package io.github.nowakprojects.stratego.domain.stratego
 
-data class BoardPoint(val rowIndex: RowIndex, val columnIndex: ColumnIndex)
+data class BoardPoint(val rowIndexY: RowIndexY, val columnIndexX: ColumnIndexX)

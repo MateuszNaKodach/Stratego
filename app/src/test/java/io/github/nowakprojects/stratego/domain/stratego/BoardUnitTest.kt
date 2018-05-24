@@ -32,7 +32,35 @@ class BoardUnitTest {
                         "[_ _ _ _ _ _]\n" +
                         "[_ _ _ _ _ _]"
         )
-        board.leftDiagonalOf(BoardPoint(2,1)).printFieldLineString()
-        board.rightDiagonalOf(BoardPoint(2,1)).printFieldLineString()
+        //board.leftDiagonalOf(BoardPoint(2,1)).printFieldLineString()
+        //board.rightDiagonalOf(BoardPoint(2,1)).printFieldLineString()
+    }
+
+    @Test
+    fun `generating game states`() {
+        val boardSize = 6
+        val board = BoardBuilder.empty(boardSize)
+        board.markField(Player.FIRST, BoardPoint(1, 1))
+        board.markField(Player.SECOND, BoardPoint(2, 1))
+        board.markField(Player.FIRST, BoardPoint(3, 4))
+        board.markField(Player.SECOND, BoardPoint(0, 0))
+        val states = GameState(board, Player.FIRST, mapOf(Player.FIRST to 0, Player.SECOND to 0))
+                .generateAllAvailableNextStates()
+        assertThat(states.size).isEqualTo(32)
+    }
+
+    @Test
+    fun `generating game states 2`() {
+        val boardSize = 6
+        val board = BoardBuilder.empty(boardSize)
+        board.markField(Player.FIRST, BoardPoint(1, 1))
+        board.markField(Player.SECOND, BoardPoint(2, 1))
+        board.markField(Player.FIRST, BoardPoint(3, 4))
+        board.markField(Player.SECOND, BoardPoint(0, 0))
+        board.markField(Player.FIRST, BoardPoint(3, 1))
+        board.markField(Player.SECOND, BoardPoint(4, 1))
+        board.markField(Player.FIRST, BoardPoint(5, 1))
+        val states = GameState(board, Player.FIRST, mapOf(Player.FIRST to 0, Player.SECOND to 0))
+                .generateAllAvailableNextStates()
     }
 }

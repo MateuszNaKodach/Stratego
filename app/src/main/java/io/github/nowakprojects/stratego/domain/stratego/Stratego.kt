@@ -10,5 +10,9 @@ class Stratego(val boardSize: Int = 8) {
 
     val movesHistory = Stack<PlayerMove>()
 
-    var filledField = 0
+    var filledFields = 0
+
+    var currentPlayer:Player = Player.FIRST
+
+    fun getCurrentState() = GameState(board.deepClone(), Player.valueOf(currentPlayer.name), playerPoints.toMap())
 }

@@ -3,18 +3,29 @@ package io.github.nowakprojects.stratego.domain.stratego
 //TODO: Optimalize calculations with multithreating (corountines or RxJava)!
 class PointsCalculator(private val board: Board, private val boardPoint: BoardPoint) {
 
-    private val row = board.row(boardPoint.rowIndex)
-    private val column = board.column(boardPoint.columnIndex)
-
     private val horizontalPoints: Int by lazy {
-        return@lazy if (isOnlyOneFreeIn(row)) row.size else 0
+        val row = board.row(boardPoint.rowIndexY)
+        return@lazy countPointsForFieldsLine(row)
     }
 
     private val verticalPoints: Int by lazy {
-        return@lazy if (isOnlyOneFreeIn(column)) column.size else 0
+        val column = board.column(boardPoint.columnIndexX)
+        return@lazy countPointsForFieldsLine(column)
     }
 
+    private val leftDiagonalPoints: Int by lazy {
+        val leftDiagonal = board.leftDiagonalOf(boardPoint)
+        return@lazy countPointsForFieldsLine(leftDiagonal)
+    }
 
+    private val rightDiagonalPoints: Int by lazy {
+        val rightDiagonal = board.rightDiagonalOf(boardPoint)
+        return@lazy countPointsForFieldsLine(rightDiagonal)
+    }
 
+    private fun countPointsForFieldsLine(fields: Array<Field>) =
+            if (isOnlyOneFreeIn(fields)) fields.size else 0
+
+    fun calculate() = horizontalPoints + verticalPoints + leftDiagonalPoints + rightDiagonalPoints
 
 }
