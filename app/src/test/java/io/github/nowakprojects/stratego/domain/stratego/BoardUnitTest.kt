@@ -78,7 +78,9 @@ class BoardUnitTest {
             stratego.getCurrentState().board.printBoardString()
             stratego.makeAutoMove(3)
             stratego.getCurrentState().board.printBoardString()
-            stratego.makeMove(BoardPoint(Scanner(System.`in`).nextInt(),Scanner(System.`in`).nextInt()))
+            val row = readLine()!!.toInt()
+            val column = readLine()!!.toInt()
+            stratego.makeMove(BoardPoint(row, column))
             stratego.getCurrentState().board.printBoardString()
         }
     }

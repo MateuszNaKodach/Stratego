@@ -2,13 +2,13 @@ package io.github.nowakprojects.stratego.domain.stratego
 
 import java.util.*
 
-class Stratego(val boardSize: Int = 8, val gameFinishedCallback: () -> Unit) {
+class Stratego(val boardSize: Int = 8, val gameFinishedCallback: () -> Unit = {}) {
 
     private var board: Board = BoardBuilder.empty(boardSize)
 
     private var playerPoints = mutableMapOf(Player.FIRST to 0, Player.SECOND to 0)
 
-    private val movesHistory = Stack<PlayerMove>()
+    val movesHistory = Stack<PlayerMove>()
 
     private var filledFields = 0
 
@@ -16,15 +16,17 @@ class Stratego(val boardSize: Int = 8, val gameFinishedCallback: () -> Unit) {
 
     fun getCurrentState() = GameState(board.deepClone(), Player.valueOf(currentPlayer.name), playerPoints.toMap())
 
-    fun makeMove(boardPoint: BoardPoint) {
+    fun makeMove(boardPoint: BoardPoint):PlayerMove? {
         val (rowIndexY, columnIndexX) = boardPoint
-        var field = board[rowIndexY][columnIndexX]
-        if (field is FreeField) {
-            field = PlayerField(currentPlayer, rowIndexY, columnIndexX)
+        if (board[rowIndexY][columnIndexX] is FreeField) {
+            board[rowIndexY][columnIndexX] = PlayerField(currentPlayer, rowIndexY, columnIndexX)
             val gainedPoints = PointsCalculator(board, boardPoint).calculate()
             playerPoints[currentPlayer] = (playerPoints[currentPlayer] ?: 0).plus(gainedPoints)
-            commitPlayerMove(PlayerMove(currentPlayer, boardPoint, gainedPoints))
+            val playerMove = PlayerMove(currentPlayer, boardPoint, gainedPoints)
+            commitPlayerMove(playerMove)
+            return playerMove
         }
+        return null;
     }
 
     private fun commitPlayerMove(playerMove: PlayerMove) {
@@ -37,11 +39,13 @@ class Stratego(val boardSize: Int = 8, val gameFinishedCallback: () -> Unit) {
         }
     }
 
-    fun makeAutoMove(maxDepth: Int) {
+    fun makeAutoMove(maxDepth: Int):PlayerMove {
         val newBestState = MinimaxAlgorithm(getCurrentState(), maxDepth, maxPlayerPointsHeuristic).bestState!!
         board = newBestState.board
         playerPoints = newBestState.playerPoints.toMutableMap()
-        commitPlayerMove(newBestState.lastMove!!)
+        val move = newBestState.lastMove!!
+        commitPlayerMove(move)
+        return move
     }
 
     fun isGameFinished() = filledFields == boardSize * boardSize
