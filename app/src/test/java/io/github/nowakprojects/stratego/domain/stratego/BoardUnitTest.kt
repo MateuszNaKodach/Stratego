@@ -60,6 +60,11 @@ class BoardUnitTest {
         board.markField(Player.FIRST, BoardPoint(3, 1))
         board.markField(Player.SECOND, BoardPoint(4, 1))
         board.markField(Player.FIRST, BoardPoint(5, 1))
+        board.markField(Player.FIRST, BoardPoint(0, 2))
+        board.markField(Player.FIRST, BoardPoint(0, 3))
+        board.markField(Player.FIRST, BoardPoint(0, 4))
+        board.markField(Player.FIRST, BoardPoint(0, 5))
+
         val states = GameState(board, Player.FIRST, mapOf(Player.FIRST to 0, Player.SECOND to 0))
                 .generateAllAvailableNextStates()
     }
