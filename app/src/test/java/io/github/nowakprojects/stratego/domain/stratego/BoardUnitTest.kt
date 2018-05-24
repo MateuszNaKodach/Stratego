@@ -2,6 +2,7 @@ package io.github.nowakprojects.stratego.domain.stratego
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
+import java.util.*
 
 
 class BoardUnitTest {
@@ -68,5 +69,17 @@ class BoardUnitTest {
         val currentState = GameState(board, Player.FIRST, mapOf(Player.FIRST to 0, Player.SECOND to 0))
         val best = MinimaxAlgorithm(currentState, 3, minPlayerPointsHeuristic).bestState
 
+    }
+
+    @Test
+    fun playing() {
+        val stratego = Stratego(6, { println("FINISHED!") })
+        while (!stratego.isGameFinished()) {
+            stratego.getCurrentState().board.printBoardString()
+            stratego.makeAutoMove(3)
+            stratego.getCurrentState().board.printBoardString()
+            stratego.makeMove(BoardPoint(Scanner(System.`in`).nextInt(),Scanner(System.`in`).nextInt()))
+            stratego.getCurrentState().board.printBoardString()
+        }
     }
 }
