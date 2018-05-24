@@ -25,7 +25,7 @@ class BoardUnitTest {
         board.markField(Player.FIRST, BoardPoint(3, 4))
         board.markField(Player.SECOND, BoardPoint(0, 0))
         assertThat(board.toPlayersBoardString()).isEqualTo(
-                        "[S _ _ _ _ _]\n" +
+                "[S _ _ _ _ _]\n" +
                         "[_ F _ _ _ _]\n" +
                         "[_ S _ _ _ _]\n" +
                         "[_ _ _ _ F _]\n" +
@@ -65,7 +65,8 @@ class BoardUnitTest {
         board.markField(Player.FIRST, BoardPoint(0, 4))
         board.markField(Player.FIRST, BoardPoint(0, 5))
 
-        val states = GameState(board, Player.FIRST, mapOf(Player.FIRST to 0, Player.SECOND to 0))
-                .generateAllAvailableNextStates()
+        val currentState = GameState(board, Player.FIRST, mapOf(Player.FIRST to 0, Player.SECOND to 0))
+        val best = MinimaxAlgorithm(currentState, 3, minPlayerPointsHeuristic).bestState
+
     }
 }

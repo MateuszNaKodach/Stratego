@@ -14,7 +14,7 @@ class GameState(val board: Board, val currentPlayer: Player, val playerPoints: M
                 }
             }
         }
-        return states.sortedByDescending { it.playerPoints[currentPlayer] }
+        return states
     }
 
 }
