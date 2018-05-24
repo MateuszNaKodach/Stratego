@@ -15,6 +15,7 @@ import io.github.nowakprojects.stratego.R
 import io.github.nowakprojects.stratego.domain.stratego.*
 import io.github.nowakprojects.stratego.presentation.view.TileView
 import io.github.nowakprojects.stratego.presentation.viewmodel.StrategoViewModel
+import kotlinx.android.synthetic.main.fragment_player_points.*
 import kotlinx.android.synthetic.main.game_board_fragment.*
 
 class GameBoardFragment : Fragment() {

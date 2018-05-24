@@ -11,7 +11,10 @@ class StrategoActivity : AppCompatActivity() {
         setContentView(R.layout.stratego_activity)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, GameBoardFragment.newInstance())
+                    .replace(R.id.container_gameBoard, GameBoardFragment.newInstance())
+                    .commitNow()
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.container_playerPoints, PlayerPointsFragment.newInstance())
                     .commitNow()
         }
     }

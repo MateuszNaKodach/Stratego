@@ -5,7 +5,7 @@
     android:id="@+id/gameboard"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.gameboard.GameBoardFragment">
+    tools:context=".presentation.GameBoardFragment">
 
     <TextView
         android:id="@+id/message"
