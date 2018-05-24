@@ -31,7 +31,7 @@ class PlayerPointsFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(StrategoViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity!!).get(StrategoViewModel::class.java)
 
         textView_firstPlayerPoints.text = "Player 1: 0"
         textView_secondPlayerPoints.text = "Player 2: 0"
@@ -43,6 +43,8 @@ class PlayerPointsFragment : Fragment() {
                 textView_secondPlayerPoints.text = "Player 2: ${playerPoints[Player.SECOND]}"
             }
         })
+
+        viewModel.loadingLiveData.observe(this, Observer { progressBar.visibility = if (it != null && it) View.VISIBLE else View.INVISIBLE })
     }
 
 

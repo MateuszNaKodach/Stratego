@@ -15,8 +15,13 @@ class StrategoViewModel : ViewModel() {
     val depth = 3
     val stratego = Stratego(6, { println("GAME FINISHED!") })
     var boardEnabled = true
+        set(value) {
+            field = value
+            loadingLiveData.value = !field
+        }
 
     val moveLiveData: MutableLiveData<PlayerMove> = MutableLiveData()
+    val loadingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     //TODO: Add points live data!
 
     fun makeMove(boardPoint: BoardPoint) {

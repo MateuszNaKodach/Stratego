@@ -40,7 +40,7 @@ class Stratego(val boardSize: Int = 8, val gameFinishedCallback: () -> Unit = {}
     }
 
     fun makeAutoMove(maxDepth: Int):PlayerMove {
-        val newBestState = MinimaxAlgorithm(getCurrentState(), maxDepth, maxPlayerPointsHeuristic).bestState!!
+        val newBestState = MinimaxAlgorithm(getCurrentState(), maxDepth, pointsAdvantageHeuristic).bestState!!
         board = newBestState.board
         playerPoints = newBestState.playerPoints.toMutableMap()
         val move = newBestState.lastMove!!

@@ -35,7 +35,7 @@ class GameBoardFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(StrategoViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity!!).get(StrategoViewModel::class.java)
         val boardSize = viewModel.stratego.boardSize
         gameBoard.columnCount = boardSize
 
@@ -59,7 +59,6 @@ class GameBoardFragment : Fragment() {
                 val (rowIndexY, columnIndexX) = playerMove.boardPoint
                 boardCells[rowIndexY][columnIndexX].markByPlayer(playerMove.player)
                 val playerPoints = viewModel.stratego.getCurrentState().playerPoints
-                Toast.makeText(context, "FirstPlayer: ${playerPoints[Player.FIRST]} SecondPlayer: ${playerPoints[Player.SECOND]}", Toast.LENGTH_SHORT).show()
             }
         })
 
